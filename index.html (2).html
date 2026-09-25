@@ -1,0 +1,2357 @@
+<!DOCTYPE html>
+
+<title>My Digital Bible</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f4efe4;
+    color: #2f2a24;
+    transition: 0.3s;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark {
+    background: #181818;
+    color: #eeeeee;
+}
+
+body.dark .sidebar,
+body.dark .topbar,
+body.dark .content,
+body.dark .verse-card,
+body.dark .memory-box,
+body.dark .welcome,
+body.dark .modal-box {
+    background: #242424;
+    color: #eeeeee;
+}
+
+body.dark input,
+body.dark select {
+    background: #333;
+    color: white;
+    border-color: #555;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar {
+    height: 70px;
+    background: #5c3b20;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 32px;
+}
+
+.logo h1 {
+    font-size: 24px;
+}
+
+.logo small {
+    display: block;
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.header-btn {
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 10px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.header-btn:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    bottom: 0;
+    width: 270px;
+    background: #fffaf0;
+    border-right: 1px solid #ddd0bc;
+    overflow-y: auto;
+    padding: 20px 12px;
+    z-index: 900;
+}
+
+.sidebar-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #8b6b48;
+    margin: 12px 10px 8px;
+    font-weight: bold;
+}
+
+.book-btn {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 9px 12px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 7px;
+    color: inherit;
+    font-family: inherit;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.book-btn:hover {
+    background: #eadbc4;
+}
+
+.book-btn.active {
+    background: #7b4f29;
+    color: white;
+    font-weight: bold;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    margin-left: 270px;
+    padding-top: 70px;
+    min-height: 100vh;
+}
+
+.content {
+    max-width: 1000px;
+    margin: auto;
+    padding: 35px 25px 60px;
+}
+
+/* =========================
+   WELCOME
+========================= */
+
+.welcome {
+    background: #fffaf0;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
+.welcome h2 {
+    color: #70451f;
+    margin-bottom: 10px;
+}
+
+body.dark .welcome h2 {
+    color: #dcb68a;
+}
+
+.welcome p {
+    line-height: 1.7;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 13px 15px;
+    border: 1px solid #cdbda5;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+.search-box button {
+    background: #7b4f29;
+    color: white;
+    border: none;
+    padding: 0 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* =========================
+   MEMORY VERSE
+========================= */
+
+.memory-box {
+    background: #f7ead2;
+    border-left: 5px solid #8b5e34;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.memory-box h3 {
+    margin-bottom: 10px;
+    color: #70451f;
+}
+
+body.dark .memory-box h3 {
+    color: #e2bd8a;
+}
+
+/* =========================
+   BIBLE HEADER
+========================= */
+
+.bible-header {
+    background: #fffaf0;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.bible-header h2 {
+    font-size: 30px;
+    color: #70451f;
+    margin-bottom: 5px;
+}
+
+body.dark .bible-header h2 {
+    color: #e0ba87;
+}
+
+.chapter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.chapter-controls select,
+.control-btn {
+    padding: 11px 15px;
+    border: 1px solid #cdbda5;
+    border-radius: 8px;
+    background: white;
+    color: #33291f;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+body.dark .chapter-controls select,
+body.dark .control-btn {
+    background: #333;
+    color: white;
+    border-color: #555;
+}
+
+.control-btn {
+    background: #7b4f29;
+    color: white;
+    border: none;
+}
+
+.control-btn:hover {
+    opacity: 0.85;
+}
+
+.control-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* =========================
+   VERSES
+========================= */
+
+.chapter-area {
+    background: #fffaf0;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
+.chapter-title {
+    text-align: center;
+    font-size: 22px;
+    color: #70451f;
+    margin-bottom: 25px;
+}
+
+body.dark .chapter-title {
+    color: #dfba89;
+}
+
+.verse-card {
+    background: #fff;
+    border-bottom: 1px solid #e1d6c5;
+    padding: 18px 10px;
+    display: flex;
+    gap: 15px;
+    transition: 0.2s;
+}
+
+.verse-card:hover {
+    background: #faf4e9;
+}
+
+body.dark .verse-card:hover {
+    background: #303030;
+}
+
+.verse-number {
+    min-width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #7b4f29;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.verse-text {
+    flex: 1;
+    line-height: 1.8;
+    font-size: 17px;
+}
+
+.verse-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    height: 32px;
+    width: 32px;
+    border-radius: 5px;
+}
+
+.icon-btn:hover {
+    background: #eadbc4;
+}
+
+/* =========================
+   NO VERSES
+========================= */
+
+.no-verses {
+    text-align: center;
+    padding: 50px 20px;
+    color: #777;
+}
+
+.no-verses .big-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.nav-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    background: #7b4f29;
+    color: white;
+    transition: 0.2s;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    background: #613d21;
+}
+
+.nav-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================
+   SEARCH RESULTS
+========================= */
+
+.search-results {
+    background: #fffaf0;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    display: none;
+}
+
+.search-results h3 {
+    margin-bottom: 15px;
+}
+
+.result-item {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.result-item:hover {
+    background: #f0e5d3;
+}
+
+body.dark .result-item:hover {
+    background: #333;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 15px;
+    padding: 25px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-box h2 {
+    margin-bottom: 15px;
+    color: #70451f;
+}
+
+.modal-close {
+    float: right;
+    border: none;
+    background: transparent;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.menu-btn {
+    display: none;
+}
+
+@media (max-width: 800px) {
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .logo h1 {
+        font-size: 19px;
+    }
+
+    .logo small {
+        display: none;
+    }
+
+    .menu-btn {
+        display: inline-block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: 0.3s;
+        width: 280px;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .content {
+        padding: 25px 15px 50px;
+    }
+
+    .header-buttons .hide-mobile {
+        display: none;
+    }
+
+    .navigation {
+        flex-direction: column;
+    }
+
+    .chapter-controls {
+        flex-direction: column;
+    }
+
+    .chapter-controls select,
+    .control-btn {
+        width: 100%;
+    }
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9a7958;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="topbar">
+
+    <div class="logo">
+
+        <button class="header-btn menu-btn" onclick="toggleSidebar()">
+            ☰
+        </button>
+
+        <div class="logo-icon">
+            📖
+        </div>
+
+        <div>
+            <h1>My Digital Bible</h1>
+            <small>Read • Reflect • Remember</small>
+        </div>
+
+    </div>
+
+    <div class="header-buttons">
+
+        <button class="header-btn hide-mobile" onclick="showFavorites()">
+            ❤️ Favorites
+        </button>
+
+        <button class="header-btn hide-mobile" onclick="showMemoryVerses()">
+            🧠 Memory
+        </button>
+
+        <button class="header-btn" onclick="toggleDarkMode()">
+            🌙
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-title">
+        Old Testament
+    </div>
+
+    <div id="oldTestamentList"></div>
+
+    <div class="sidebar-title">
+        New Testament
+    </div>
+
+    <div id="newTestamentList"></div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+<div class="content">
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+        <h2>📖 Welcome to My Digital Bible</h2>
+
+        <p>
+            Explore the Bible from <strong>Genesis to Revelation</strong>.
+            Choose a book, select a chapter, and use the
+            Previous and Next buttons to continue reading.
+        </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Bible books or verses..."
+            onkeyup="searchBible(event)"
+        >
+
+        <button onclick="searchBible()">
+            🔍 Search
+        </button>
+
+    </div>
+
+
+    <!-- SEARCH RESULTS -->
+
+    <section class="search-results" id="searchResults">
+
+        <h3>🔎 Search Results</h3>
+
+        <div id="resultsList"></div>
+
+    </section>
+
+
+    <!-- MEMORY VERSE -->
+
+    <section class="memory-box">
+
+        <h3>🧠 Memory Verse of the Day</h3>
+
+        <p id="dailyVerse">
+            "For God so loved the world, that he gave his only begotten Son,
+            that whosoever believeth in him should not perish, but have
+            everlasting life."
+        </p>
+
+        <br>
+
+        <strong id="dailyReference">
+            — John 3:16
+        </strong>
+
+    </section>
+
+
+    <!-- BIBLE HEADER -->
+
+    <section class="bible-header">
+
+        <h2 id="bookTitle">
+            Genesis
+        </h2>
+
+        <p id="bookSubtitle">
+            Old Testament
+        </p>
+
+        <div class="chapter-controls">
+
+            <select
+                id="chapterSelect"
+                onchange="changeChapterFromSelect()"
+            ></select>
+
+            <button
+                class="control-btn"
+                onclick="previousChapter()"
+            >
+                ⬅️ Previous
+            </button>
+
+            <button
+                class="control-btn"
+                onclick="nextChapter()"
+            >
+                Next ➡️
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHAPTER CONTENT -->
+
+    <section class="chapter-area">
+
+        <h3
+            class="chapter-title"
+            id="chapterTitle"
+        >
+            Genesis 1
+        </h3>
+
+        <div id="verseContainer"></div>
+
+        <!-- NAVIGATION -->
+
+        <div class="navigation">
+
+            <button
+                class="nav-btn"
+                id="previousBtn"
+                onclick="previousChapter()"
+            >
+                ⬅️ Previous Chapter
+            </button>
+
+            <button
+                class="nav-btn"
+                id="nextBtn"
+                onclick="nextChapter()"
+            >
+                Next Chapter ➡️
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <button
+            class="modal-close"
+            onclick="closeModal()"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BIBLE BOOKS
+========================================================= */
+
+const oldTestament = [
+
+    "Genesis",
+    "Exodus",
+    "Leviticus",
+    "Numbers",
+    "Deuteronomy",
+    "Joshua",
+    "Judges",
+    "Ruth",
+    "1 Samuel",
+    "2 Samuel",
+    "1 Kings",
+    "2 Kings",
+    "1 Chronicles",
+    "2 Chronicles",
+    "Ezra",
+    "Nehemiah",
+    "Esther",
+    "Job",
+    "Psalms",
+    "Proverbs",
+    "Ecclesiastes",
+    "Song of Solomon",
+    "Isaiah",
+    "Jeremiah",
+    "Lamentations",
+    "Ezekiel",
+    "Daniel",
+    "Hosea",
+    "Joel",
+    "Amos",
+    "Obadiah",
+    "Jonah",
+    "Micah",
+    "Nahum",
+    "Habakkuk",
+    "Zephaniah",
+    "Haggai",
+    "Zechariah",
+    "Malachi"
+
+];
+
+const newTestament = [
+
+    "Matthew",
+    "Mark",
+    "Luke",
+    "John",
+    "Acts",
+    "Romans",
+    "1 Corinthians",
+    "2 Corinthians",
+    "Galatians",
+    "Ephesians",
+    "Philippians",
+    "Colossians",
+    "1 Thessalonians",
+    "2 Thessalonians",
+    "1 Timothy",
+    "2 Timothy",
+    "Titus",
+    "Philemon",
+    "Hebrews",
+    "James",
+    "1 Peter",
+    "2 Peter",
+    "1 John",
+    "2 John",
+    "3 John",
+    "Jude",
+    "Revelation"
+
+];
+
+
+/* =========================================================
+   CHAPTER COUNTS
+   This makes Previous / Next work through the entire Bible.
+========================================================= */
+
+const chapterCounts = {
+
+    "Genesis": 50,
+    "Exodus": 40,
+    "Leviticus": 27,
+    "Numbers": 36,
+    "Deuteronomy": 34,
+    "Joshua": 24,
+    "Judges": 21,
+    "Ruth": 4,
+    "1 Samuel": 31,
+    "2 Samuel": 24,
+    "1 Kings": 22,
+    "2 Kings": 25,
+    "1 Chronicles": 29,
+    "2 Chronicles": 36,
+    "Ezra": 10,
+    "Nehemiah": 13,
+    "Esther": 10,
+    "Job": 42,
+    "Psalms": 150,
+    "Proverbs": 31,
+    "Ecclesiastes": 12,
+    "Song of Solomon": 8,
+    "Isaiah": 66,
+    "Jeremiah": 52,
+    "Lamentations": 5,
+    "Ezekiel": 48,
+    "Daniel": 12,
+    "Hosea": 14,
+    "Joel": 3,
+    "Amos": 9,
+    "Obadiah": 1,
+    "Jonah": 4,
+    "Micah": 7,
+    "Nahum": 3,
+    "Habakkuk": 3,
+    "Zephaniah": 3,
+    "Haggai": 2,
+    "Zechariah": 14,
+    "Malachi": 4,
+
+    "Matthew": 28,
+    "Mark": 16,
+    "Luke": 24,
+    "John": 21,
+    "Acts": 28,
+    "Romans": 16,
+    "1 Corinthians": 16,
+    "2 Corinthians": 13,
+    "Galatians": 6,
+    "Ephesians": 6,
+    "Philippians": 4,
+    "Colossians": 4,
+    "1 Thessalonians": 5,
+    "2 Thessalonians": 3,
+    "1 Timothy": 6,
+    "2 Timothy": 4,
+    "Titus": 3,
+    "Philemon": 1,
+    "Hebrews": 13,
+    "James": 5,
+    "1 Peter": 5,
+    "2 Peter": 3,
+    "1 John": 5,
+    "2 John": 1,
+    "3 John": 1,
+    "Jude": 1,
+    "Revelation": 22
+
+};
+
+
+/* =========================================================
+   SAMPLE BIBLE VERSES
+   Additional chapters can easily be added here.
+========================================================= */
+
+const bibleData = {
+
+    "Genesis": {
+
+        1: [
+            ["1", "In the beginning God created the heaven and the earth."],
+            ["2", "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."],
+            ["3", "And God said, Let there be light: and there was light."],
+            ["4", "And God saw the light, that it was good: and God divided the light from the darkness."],
+            ["5", "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day."]
+        ],
+
+        2: [
+            ["1", "Thus the heavens and the earth were finished, and all the host of them."],
+            ["2", "And on the seventh day God ended his work which he had made; and he rested on the seventh day from all his work which he had made."],
+            ["3", "And God blessed the seventh day, and sanctified it: because that in it he had rested from all his work which God created and made."]
+        ]
+
+    },
+
+
+    "Psalms": {
+
+        1: [
+            ["1", "Blessed is the man that walketh not in the counsel of the ungodly."],
+            ["2", "But his delight is in the law of the LORD; and in his law doth he meditate day and night."],
+            ["3", "And he shall be like a tree planted by the rivers of water, that bringeth forth his fruit in his season."]
+        ],
+
+        23: [
+            ["1", "The LORD is my shepherd; I shall not want."],
+            ["2", "He maketh me to lie down in green pastures: he leadeth me beside the still waters."],
+            ["3", "He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake."],
+            ["4", "Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me."],
+            ["5", "Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over."],
+            ["6", "Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever."]
+        ]
+
+    },
+
+
+    "Proverbs": {
+
+        3: [
+            ["1", "My son, forget not my law; but let thine heart keep my commandments."],
+            ["2", "For length of days, and long life, and peace, shall they add to thee."],
+            ["3", "Let not mercy and truth forsake thee: bind them about thy neck; write them upon the table of thine heart."],
+            ["5", "Trust in the LORD with all thine heart; and lean not unto thine own understanding."],
+            ["6", "In all thy ways acknowledge him, and he shall direct thy paths."]
+        ]
+
+    },
+
+
+    "Isaiah": {
+
+        41: [
+            ["10", "Fear thou not; for I am with thee: be not dismayed; for I am thy God."],
+            ["11", "Behold, all they that were incensed against thee shall be ashamed and confounded."],
+            ["13", "For I the LORD thy God will hold thy right hand, saying unto thee, Fear not; I will help thee."]
+        ]
+
+    },
+
+
+    "Matthew": {
+
+        5: [
+            ["3", "Blessed are the poor in spirit: for theirs is the kingdom of heaven."],
+            ["4", "Blessed are they that mourn: for they shall be comforted."],
+            ["5", "Blessed are the meek: for they shall inherit the earth."],
+            ["6", "Blessed are they which do hunger and thirst after righteousness: for they shall be filled."]
+        ],
+
+        6: [
+            ["9", "After this manner therefore pray ye: Our Father which art in heaven, Hallowed be thy name."],
+            ["10", "Thy kingdom come. Thy will be done in earth, as it is in heaven."],
+            ["11", "Give us this day our daily bread."]
+        ]
+
+    },
+
+
+    "John": {
+
+        1: [
+            ["1", "In the beginning was the Word, and the Word was with God, and the Word was God."],
+            ["2", "The same was in the beginning with God."],
+            ["3", "All things were made by him; and without him was not any thing made that was made."]
+        ],
+
+        3: [
+            ["16", "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."],
+            ["17", "For God sent not his Son into the world to condemn the world; but that the world through him might be saved."]
+        ]
+
+    },
+
+
+    "Romans": {
+
+        8: [
+            ["28", "And we know that all things work together for good to them that love God, to them who are the called according to his purpose."],
+            ["31", "What shall we then say to these things? If God be for us, who can be against us?"]
+        ]
+
+    },
+
+
+    "Philippians": {
+
+        4: [
+            ["4", "Rejoice in the Lord alway: and again I say, Rejoice."],
+            ["6", "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God."],
+            ["7", "And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus."],
+            ["13", "I can do all things through Christ which strengtheneth me."]
+        ]
+
+    },
+
+
+    "Ephesians": {
+
+        6: [
+            ["10", "Finally, my brethren, be strong in the Lord, and in the power of his might."],
+            ["11", "Put on the whole armour of God, that ye may be able to stand against the wiles of the devil."]
+        ]
+
+    },
+
+
+    "1 John": {
+
+        4: [
+            ["8", "He that loveth not knoweth not God; for God is love."],
+            ["19", "We love him, because he first loved us."]
+        ]
+
+    },
+
+
+    "Revelation": {
+
+        21: [
+            ["4", "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying."]
+        ],
+
+        22: [
+            ["20", "He which testifieth these things saith, Surely I come quickly. Amen. Even so, come, Lord Jesus."],
+            ["21", "The grace of our Lord Jesus Christ be with you all. Amen."]
+        ]
+
+    }
+
+};
+
+
+/* =========================================================
+   MEMORY VERSES
+========================================================= */
+
+const memoryVerses = [
+
+    {
+        text: "For God so loved the world, that he gave his only begotten Son.",
+        reference: "John 3:16"
+    },
+
+    {
+        text: "I can do all things through Christ which strengtheneth me.",
+        reference: "Philippians 4:13"
+    },
+
+    {
+        text: "The LORD is my shepherd; I shall not want.",
+        reference: "Psalm 23:1"
+    },
+
+    {
+        text: "Trust in the LORD with all thine heart; and lean not unto thine own understanding.",
+        reference: "Proverbs 3:5"
+    },
+
+    {
+        text: "Fear thou not; for I am with thee: be not dismayed; for I am thy God.",
+        reference: "Isaiah 41:10"
+    }
+
+];
+
+
+/* =========================================================
+   CURRENT POSITION
+========================================================= */
+
+let currentBook = "Genesis";
+
+let currentChapter = 1;
+
+let favorites = JSON.parse(
+    localStorage.getItem("bibleFavorites") || "[]"
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    createBookLists();
+
+    updateBookInterface();
+
+    displayChapter();
+
+    showDailyVerse();
+
+});
+
+
+/* =========================================================
+   CREATE BOOK LIST
+========================================================= */
+
+function createBookLists() {
+
+    const oldContainer =
+        document.getElementById("oldTestamentList");
+
+    const newContainer =
+        document.getElementById("newTestamentList");
+
+
+    oldContainer.innerHTML = "";
+
+    newContainer.innerHTML = "";
+
+
+    oldTestament.forEach(function(book) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "book-btn";
+
+        button.textContent = book;
+
+        button.dataset.book = book;
+
+        button.onclick = function() {
+
+            openBook(book);
+
+        };
+
+        oldContainer.appendChild(button);
+
+    });
+
+
+    newTestament.forEach(function(book) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "book-btn";
+
+        button.textContent = book;
+
+        button.dataset.book = book;
+
+        button.onclick = function() {
+
+            openBook(book);
+
+        };
+
+        newContainer.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   OPEN BOOK
+========================================================= */
+
+function openBook(book) {
+
+    currentBook = book;
+
+    currentChapter = 1;
+
+    updateBookInterface();
+
+    displayChapter();
+
+    closeMobileSidebar();
+
+}
+
+
+/* =========================================================
+   UPDATE BOOK INTERFACE
+========================================================= */
+
+function updateBookInterface() {
+
+    document.getElementById("bookTitle").textContent =
+        currentBook;
+
+    const testament =
+        oldTestament.includes(currentBook)
+            ? "Old Testament"
+            : "New Testament";
+
+    document.getElementById("bookSubtitle").textContent =
+        testament;
+
+
+    createChapterSelector();
+
+    updateActiveBook();
+
+    updateNavigationButtons();
+
+}
+
+
+/* =========================================================
+   ACTIVE BOOK
+========================================================= */
+
+function updateActiveBook() {
+
+    document
+        .querySelectorAll(".book-btn")
+        .forEach(function(button) {
+
+            if (button.dataset.book === currentBook) {
+
+                button.classList.add("active");
+
+            } else {
+
+                button.classList.remove("active");
+
+            }
+
+        });
+
+}
+
+
+/* =========================================================
+   CHAPTER SELECTOR
+========================================================= */
+
+function createChapterSelector() {
+
+    const select =
+        document.getElementById("chapterSelect");
+
+    select.innerHTML = "";
+
+    const totalChapters =
+        chapterCounts[currentBook] || 1;
+
+
+    for (
+        let i = 1;
+        i <= totalChapters;
+        i++
+    ) {
+
+        const option =
+            document.createElement("option");
+
+        option.value = i;
+
+        option.textContent =
+            "Chapter " + i;
+
+        if (i === currentChapter) {
+
+            option.selected = true;
+
+        }
+
+        select.appendChild(option);
+
+    }
+
+}
+
+
+/* =========================================================
+   CHANGE CHAPTER FROM DROPDOWN
+========================================================= */
+
+function changeChapterFromSelect() {
+
+    const select =
+        document.getElementById("chapterSelect");
+
+    currentChapter =
+        parseInt(select.value, 10);
+
+    displayChapter();
+
+    updateNavigationButtons();
+
+}
+
+
+/* =========================================================
+   DISPLAY CHAPTER
+========================================================= */
+
+function displayChapter() {
+
+    const container =
+        document.getElementById("verseContainer");
+
+    const title =
+        document.getElementById("chapterTitle");
+
+
+    title.textContent =
+        currentBook + " " + currentChapter;
+
+
+    container.innerHTML = "";
+
+
+    const bookData =
+        bibleData[currentBook];
+
+    const verses =
+        bookData
+            ? bookData[currentChapter]
+            : null;
+
+
+    /* -----------------------------------------
+       IF NO VERSE DATA IS AVAILABLE
+    ----------------------------------------- */
+
+    if (!verses || verses.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="no-verses">
+
+                <div class="big-icon">
+                    📖
+                </div>
+
+                <h3>
+                    ${currentBook} ${currentChapter}
+                </h3>
+
+                <br>
+
+                <p>
+                    This chapter is available in the
+                    Bible navigation.
+                </p>
+
+                <br>
+
+                <p>
+                    Use the Previous and Next buttons
+                    to continue reading.
+                </p>
+
+            </div>
+
+        `;
+
+        updateNavigationButtons();
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       DISPLAY VERSES
+    ----------------------------------------- */
+
+    verses.forEach(function(verse) {
+
+        const verseNumber = verse[0];
+
+        const verseText = verse[1];
+
+        const verseCard =
+            document.createElement("div");
+
+        verseCard.className =
+            "verse-card";
+
+
+        const isFavorite =
+            favorites.some(function(item) {
+
+                return (
+                    item.book === currentBook &&
+                    item.chapter === currentChapter &&
+                    item.verse === verseNumber
+                );
+
+            });
+
+
+        verseCard.innerHTML = `
+
+            <div class="verse-number">
+                ${verseNumber}
+            </div>
+
+            <div class="verse-text">
+                ${verseText}
+            </div>
+
+            <div class="verse-actions">
+
+                <button
+                    class="icon-btn"
+                    title="Favorite"
+                    onclick="toggleFavorite(
+                        '${escapeQuotes(currentBook)}',
+                        ${currentChapter},
+                        '${escapeQuotes(verseNumber)}',
+                        '${escapeQuotes(verseText)}'
+                    )"
+                >
+                    ${isFavorite ? "❤️" : "♡"}
+                </button>
+
+                <button
+                    class="icon-btn"
+                    title="Copy"
+                    onclick="copyVerse(
+                        '${escapeQuotes(currentBook)}',
+                        ${currentChapter},
+                        '${escapeQuotes(verseNumber)}',
+                        '${escapeQuotes(verseText)}'
+                    )"
+                >
+                    📋
+                </button>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(verseCard);
+
+    });
+
+
+    updateNavigationButtons();
+
+}
+
+
+/* =========================================================
+   NEXT CHAPTER
+========================================================= */
+
+function nextChapter() {
+
+    const totalChapters =
+        chapterCounts[currentBook];
+
+
+    /*
+       CASE 1:
+       There is another chapter in the same book.
+    */
+
+    if (currentChapter < totalChapters) {
+
+        currentChapter++;
+
+    }
+
+    /*
+       CASE 2:
+       We reached the last chapter.
+       Move to the next Bible book.
+    */
+
+    else {
+
+        const allBooks =
+            oldTestament.concat(newTestament);
+
+        const currentIndex =
+            allBooks.indexOf(currentBook);
+
+
+        /*
+           If there is another book:
+           Example:
+           Genesis 50 → Exodus 1
+        */
+
+        if (
+            currentIndex >= 0 &&
+            currentIndex < allBooks.length - 1
+        ) {
+
+            currentBook =
+                allBooks[currentIndex + 1];
+
+            currentChapter = 1;
+
+        }
+
+        /*
+           CASE 3:
+           Revelation 22
+        */
+
+        else {
+
+            currentBook = "Revelation";
+
+            currentChapter = 22;
+
+            alert(
+                "📖 You have reached the last chapter of the Bible: Revelation 22."
+            );
+
+        }
+
+    }
+
+
+    /*
+       Refresh everything.
+    */
+
+    updateBookInterface();
+
+    displayChapter();
+
+
+    /*
+       Scroll back to the Bible section.
+    */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   PREVIOUS CHAPTER
+========================================================= */
+
+function previousChapter() {
+
+    /*
+       CASE 1:
+       There is a previous chapter in the same book.
+    */
+
+    if (currentChapter > 1) {
+
+        currentChapter--;
+
+    }
+
+    /*
+       CASE 2:
+       We are at Chapter 1.
+       Move to previous book's last chapter.
+    */
+
+    else {
+
+        const allBooks =
+            oldTestament.concat(newTestament);
+
+        const currentIndex =
+            allBooks.indexOf(currentBook);
+
+
+        /*
+           Example:
+           Exodus 1 → Genesis 50
+        */
+
+        if (currentIndex > 0) {
+
+            currentBook =
+                allBooks[currentIndex - 1];
+
+            currentChapter =
+                chapterCounts[currentBook];
+
+        }
+
+        /*
+           Already at Genesis 1.
+        */
+
+        else {
+
+            currentBook = "Genesis";
+
+            currentChapter = 1;
+
+            alert(
+                "📖 You are already at the beginning: Genesis 1."
+            );
+
+        }
+
+    }
+
+
+    /*
+       Refresh everything.
+    */
+
+    updateBookInterface();
+
+    displayChapter();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   UPDATE NAVIGATION BUTTONS
+========================================================= */
+
+function updateNavigationButtons() {
+
+    const allBooks =
+        oldTestament.concat(newTestament);
+
+    const currentIndex =
+        allBooks.indexOf(currentBook);
+
+
+    const previousBtn =
+        document.getElementById("previousBtn");
+
+    const nextBtn =
+        document.getElementById("nextBtn");
+
+
+    /*
+       Previous button:
+       Disable only at Genesis 1.
+    */
+
+    if (
+        currentBook === "Genesis" &&
+        currentChapter === 1
+    ) {
+
+        previousBtn.disabled = true;
+
+    } else {
+
+        previousBtn.disabled = false;
+
+    }
+
+
+    /*
+       Next button:
+       Disable only at Revelation 22.
+    */
+
+    if (
+        currentBook === "Revelation" &&
+        currentChapter === 22
+    ) {
+
+        nextBtn.disabled = true;
+
+    } else {
+
+        nextBtn.disabled = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FAVORITES
+========================================================= */
+
+function toggleFavorite(
+    book,
+    chapter,
+    verse,
+    text
+) {
+
+    const index =
+        favorites.findIndex(function(item) {
+
+            return (
+                item.book === book &&
+                item.chapter === chapter &&
+                item.verse === verse
+            );
+
+        });
+
+
+    if (index >= 0) {
+
+        favorites.splice(index, 1);
+
+    } else {
+
+        favorites.push({
+            book: book,
+            chapter: chapter,
+            verse: verse,
+            text: text
+        });
+
+    }
+
+
+    localStorage.setItem(
+        "bibleFavorites",
+        JSON.stringify(favorites)
+    );
+
+
+    displayChapter();
+
+}
+
+
+/* =========================================================
+   SHOW FAVORITES
+========================================================= */
+
+function showFavorites() {
+
+    let html = `
+        <h2>❤️ Favorite Verses</h2>
+    `;
+
+
+    if (favorites.length === 0) {
+
+        html += `
+            <p>
+                You don't have any favorite verses yet.
+            </p>
+        `;
+
+    } else {
+
+        favorites.forEach(function(item) {
+
+            html += `
+
+                <div
+                    style="
+                        padding:15px;
+                        border-bottom:1px solid #ddd;
+                        margin-bottom:10px;
+                    "
+                >
+
+                    <strong>
+                        ${item.book} ${item.chapter}:${item.verse}
+                    </strong>
+
+                    <p style="margin-top:8px;line-height:1.6;">
+                        ${item.text}
+                    </p>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+
+    openModal(html);
+
+}
+
+
+/* =========================================================
+   MEMORY VERSES
+========================================================= */
+
+function showMemoryVerses() {
+
+    let html = `
+        <h2>🧠 Memory Verses</h2>
+    `;
+
+
+    memoryVerses.forEach(function(item) {
+
+        html += `
+
+            <div
+                style="
+                    padding:15px;
+                    border-bottom:1px solid #ddd;
+                    margin-bottom:10px;
+                "
+            >
+
+                <p style="line-height:1.7;">
+                    "${item.text}"
+                </p>
+
+                <br>
+
+                <strong>
+                    — ${item.reference}
+                </strong>
+
+            </div>
+
+        `;
+
+    });
+
+
+    openModal(html);
+
+}
+
+
+/* =========================================================
+   DAILY VERSE
+========================================================= */
+
+function showDailyVerse() {
+
+    const today =
+        new Date();
+
+    const index =
+        today.getDate() %
+        memoryVerses.length;
+
+    const verse =
+        memoryVerses[index];
+
+
+    document.getElementById(
+        "dailyVerse"
+    ).textContent =
+        '"' + verse.text + '"';
+
+
+    document.getElementById(
+        "dailyReference"
+    ).textContent =
+        "— " + verse.reference;
+
+}
+
+
+/* =========================================================
+   COPY VERSE
+========================================================= */
+
+function copyVerse(
+    book,
+    chapter,
+    verse,
+    text
+) {
+
+    const content =
+        `${book} ${chapter}:${verse} - ${text}`;
+
+
+    if (
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+    ) {
+
+        navigator.clipboard.writeText(content)
+            .then(function() {
+
+                alert("📋 Verse copied!");
+
+            })
+            .catch(function() {
+
+                fallbackCopy(content);
+
+            });
+
+    } else {
+
+        fallbackCopy(content);
+
+    }
+
+}
+
+
+/* =========================================================
+   FALLBACK COPY
+========================================================= */
+
+function fallbackCopy(text) {
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value = text;
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    alert("📋 Verse copied!");
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function searchBible(event) {
+
+    if (
+        event &&
+        event.key !== "Enter"
+    ) {
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById("searchInput");
+
+    const query =
+        input.value.trim().toLowerCase();
+
+
+    const resultsBox =
+        document.getElementById("searchResults");
+
+    const resultsList =
+        document.getElementById("resultsList");
+
+
+    if (!query) {
+
+        resultsBox.style.display = "none";
+
+        return;
+
+    }
+
+
+    resultsList.innerHTML = "";
+
+
+    let found = 0;
+
+
+    /*
+       Search book names.
+    */
+
+    const allBooks =
+        oldTestament.concat(newTestament);
+
+
+    allBooks.forEach(function(book) {
+
+        if (
+            book.toLowerCase().includes(query)
+        ) {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "result-item";
+
+            item.textContent =
+                "📖 " + book;
+
+            item.onclick = function() {
+
+                openBook(book);
+
+                resultsBox.style.display =
+                    "none";
+
+            };
+
+            resultsList.appendChild(item);
+
+            found++;
+
+        }
+
+    });
+
+
+    /*
+       Search verses from our available data.
+    */
+
+    Object.keys(bibleData).forEach(function(book) {
+
+        const chapters =
+            bibleData[book];
+
+
+        Object.keys(chapters).forEach(function(chapter) {
+
+            chapters[chapter].forEach(function(verse) {
+
+                const verseNumber =
+                    verse[0];
+
+                const verseText =
+                    verse[1];
+
+
+                if (
+                    verseText
+                        .toLowerCase()
+                        .includes(query)
+                ) {
+
+                    const item =
+                        document.createElement("div");
+
+                    item.className =
+                        "result-item";
+
+
+                    item.innerHTML = `
+
+                        <strong>
+                            📖 ${book} ${chapter}:${verseNumber}
+                        </strong>
+
+                        <br>
+
+                        <span>
+                            ${verseText}
+                        </span>
+
+                    `;
+
+
+                    item.onclick = function() {
+
+                        currentBook = book;
+
+                        currentChapter =
+                            parseInt(chapter, 10);
+
+                        updateBookInterface();
+
+                        displayChapter();
+
+                        resultsBox.style.display =
+                            "none";
+
+                    };
+
+
+                    resultsList.appendChild(item);
+
+                    found++;
+
+                }
+
+            });
+
+        });
+
+    });
+
+
+    if (found === 0) {
+
+        resultsList.innerHTML = `
+            <p>
+                No results found.
+            </p>
+        `;
+
+    }
+
+
+    resultsBox.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+function toggleDarkMode() {
+
+    document.body.classList.toggle("dark");
+
+
+    const isDark =
+        document.body.classList.contains("dark");
+
+
+    localStorage.setItem(
+        "bibleDarkMode",
+        isDark ? "true" : "false"
+    );
+
+}
+
+
+/* =========================================================
+   LOAD DARK MODE
+========================================================= */
+
+if (
+    localStorage.getItem("bibleDarkMode") === "true"
+) {
+
+    document.body.classList.add("dark");
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+function toggleSidebar() {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    sidebar.classList.toggle("open");
+
+}
+
+
+function closeMobileSidebar() {
+
+    if (
+        window.innerWidth <= 800
+    ) {
+
+        document
+            .getElementById("sidebar")
+            .classList.remove("open");
+
+    }
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openModal(content) {
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = content;
+
+
+    document
+        .getElementById("modal")
+        .classList.add("show");
+
+}
+
+
+function closeModal() {
+
+    document
+        .getElementById("modal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document
+    .getElementById("modal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ESCAPE QUOTES
+========================================================= */
+
+function escapeQuotes(text) {
+
+    return String(text)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+
+}
+
+</script>
+
+</body>
+</html>
